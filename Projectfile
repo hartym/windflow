@@ -26,6 +26,7 @@ install_requires = [
     'python-dotenv ==0.6.0',
     'tornado ==4.4.1',
     'uvloop ==0.5.3',
+    'simplejson',
 ]
 
 extras_require = {
