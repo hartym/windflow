@@ -17,14 +17,16 @@ except:
 
 setup(
     name = 'windflow',
-    description = 'windflow',
+    description = ('Windflow is a toolkit for creating web applications faster with tornado and '
+ 'asyncio.'),
     license = 'Apache 2.0',
     install_requires = ['Jinja2 ==2.8',
  'SQLAlchemy ==1.1.0b3',
  'psycopg2 ==2.6.2',
  'python-dotenv ==0.6.0',
  'tornado ==4.4.1',
- 'uvloop ==0.5.3'],
+ 'uvloop ==0.5.3',
+ 'simplejson'],
     version = version,
     long_description = read('README.rst'),
     classifiers = read('classifiers.txt', tolines),
