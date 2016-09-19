@@ -4,11 +4,11 @@ name = 'windflow'
 description = 'Windflow is a toolkit for creating web applications faster with tornado and asyncio.'
 license = 'Apache 2.0'
 
-url = ''
-download_url = ''
+url = 'https://github.com/hartym/windflow'
+download_url = 'https://github.com/hartym/windflow/archive/{version}.tar.gz'
 
-author = ''
-author_email = ''
+author = 'Romain Dorgueil'
+author_email = 'romain@dorgueil.net'
 
 enable_features = {
     'git',

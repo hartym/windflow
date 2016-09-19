@@ -41,6 +41,6 @@ setup(
          'pytest-cov >=2.3,<2.4',
          'sphinx',
          'sphinx_rtd_theme']},
-    url = '',
-    download_url = ''.format(version=version),
+    url = 'https://github.com/hartym/windflow',
+    download_url = 'https://github.com/hartym/windflow/archive/{version}.tar.gz'.format(version=version),
 )
