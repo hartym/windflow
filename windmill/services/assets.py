@@ -1,5 +1,5 @@
 import simplejson
-from windmill.services import Service
+from windflow.services import Service
 
 
 class WebpackAssets(Service):

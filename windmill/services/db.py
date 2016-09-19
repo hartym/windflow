@@ -3,7 +3,7 @@ from contextlib import contextmanager
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from tornado.web import HTTPError
-from windmill.services import Service
+from windflow.services import Service
 
 
 class Database(Service):

@@ -1,7 +1,7 @@
-# windmill (see github.com/python-edgy/project)
+# windflow (see github.com/python-edgy/project)
 
-name = 'windmill'
-description = 'Windmill'
+name = 'windflow'
+description = 'Windflow is a toolkit for creating web applications faster with tornado and asyncio.'
 license = 'Apache 2.0'
 
 url = ''

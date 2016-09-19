@@ -1,6 +1,6 @@
 import simplejson
 from jinja2 import Environment, FileSystemLoader
-from windmill.services.base import Service
+from windflow.services.base import Service
 
 
 class Templating(Service):

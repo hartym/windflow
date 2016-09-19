@@ -10,7 +10,7 @@ PYTHON_REQUIREMENTS_DEV_FILE ?= requirements-dev.txt
 QUICK ?= 
 VIRTUAL_ENV ?= .virtualenv-$(PYTHON_BASENAME)
 PIP ?= $(VIRTUAL_ENV)/bin/pip
-PYTEST_OPTIONS ?= --capture=no --cov=windmill --cov-report html
+PYTEST_OPTIONS ?= --capture=no --cov=windflow --cov-report html
 SPHINX_OPTS ?= 
 SPHINX_BUILD ?= $(VIRTUAL_ENV)/bin/sphinx-build
 SPHINX_SOURCEDIR ?= doc
@@ -42,7 +42,7 @@ $(VIRTUAL_ENV):
 	ln -fs $(VIRTUAL_ENV)/bin/activate activate-$(PYTHON_BASENAME)
 
 lint: install-dev
-	$(VIRTUAL_ENV)/bin/pylint --py3k windmill -f html > pylint.html
+	$(VIRTUAL_ENV)/bin/pylint --py3k windflow -f html > pylint.html
 
 test: install-dev
 	$(VIRTUAL_ENV)/bin/py.test $(PYTEST_OPTIONS) tests

@@ -16,8 +16,8 @@ except:
     version = 'dev'
 
 setup(
-    name = 'windmill',
-    description = 'Windmill',
+    name = 'windflow',
+    description = 'windflow',
     license = 'Apache 2.0',
     install_requires = ['Jinja2 ==2.8',
  'SQLAlchemy ==1.1.0b3',
