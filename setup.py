@@ -26,7 +26,7 @@ setup(
  'python-dotenv ==0.6.0',
  'tornado ==4.4.1',
  'uvloop ==0.5.3',
- 'simplejson'],
+ 'simplejson ==3.8.2'],
     version = version,
     long_description = read('README.rst'),
     classifiers = read('classifiers.txt', tolines),
