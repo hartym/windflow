@@ -27,6 +27,7 @@ install_requires = [
     'tornado ==4.4.1',
     'uvloop ==0.5.3',
     'simplejson ==3.8.2',
+    'honcho ==0.7.1',
 ]
 
 extras_require = {

@@ -1,9 +1,7 @@
 from contextlib import contextmanager
 
 import sqlalchemy
-import sqlalchemy.exc
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+import sqlalchemy.orm
 from tornado.web import HTTPError
 from windflow.services import Service
 
@@ -19,19 +17,22 @@ class Database(Service):
     def __init__(self):
         if not self.dsn:
             raise AttributeError('DSN is required.')
-        self.engine = create_engine(self.dsn, echo=True)
-        self.sessionmaker = sessionmaker(bind=self.engine)
+        self.engine = sqlalchemy.create_engine(self.dsn)
+        self.sessionmaker = sqlalchemy.orm.sessionmaker(bind=self.engine)
+
+        import logging
+        logging.getLogger('sqlalchemy.engine').setLevel(logging.WARNING)
+
         self.load()
 
     def __call__(self):
         """
         :return sqlalchemy.orm.session.Session:
         """
-        from sqlalchemy.orm.exc import NoResultFound
         self.load()
         try:
             yield self.sessionmaker()
-        except NoResultFound as e:
+        except sqlalchemy.orm.exc.NoResultFound as e:
             raise HTTPError(404)
 
     def load(self):
@@ -42,7 +43,7 @@ class Database(Service):
 Database.__call__ = contextmanager(Database.__call__)
 
 try:
-    from alembic import command as alembic_cmg
+    from alembic import command as alembic_cmd
     from alembic.config import Config as AlembicCfg
 except ImportError as e:
     ALEMBIC_NOT_INSTALLED_ERROR = 'AlembicMigrationsMixin requires the optional "alembic" dependency. Install it with `pip install alembic`.'
@@ -66,7 +67,7 @@ class DatabaseMigrationsMixin:
     def alembic_cfg(self):
         return AlembicCfg(self.alembic_cfg_path)
 
-    def execute_up(self, options, logger):
+    def execute_up(self, logger, options):
         self.load()
 
         if options.reset:
@@ -75,17 +76,20 @@ class DatabaseMigrationsMixin:
         logger.info('Migrating database...')
         alembic_cmd.upgrade(self.alembic_cfg, "head")
 
-    def execute_down(self, options, logger):
+    def execute_down(self, logger, options):
         self.load()
 
         logger.info('Trying to downgrade database...')
         try:
             alembic_cmd.downgrade(self.alembic_cfg, 'base')
-        except sqlalchemy.exc.ProgrammingError as e:
-            pass
+        except Exception as e:
+            logger.warning('Error while downgrading: %s', e)
 
         logger.info('Forcing base revision...')
-        alembic_cmd.stamp(self.alembic_cfg, 'base')
+        try:
+            alembic_cmd.stamp(self.alembic_cfg, 'base')
+        except Exception as e:
+            logger.warning('Error while stamping: %s', e)
 
         logger.info('Dropping what remains...')
         self.metadata.drop_all(self.engine)

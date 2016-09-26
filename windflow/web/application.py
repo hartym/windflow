@@ -24,7 +24,7 @@ class ApplicationFactory:
 
         app = self.factory(*args, **kwargs)
 
-        for prefix, config in self.mounts:
+        for prefix, config in reversed(self.mounts):
             app.add_handlers('.*$', [
                 (os.path.join(prefix, handler[0].lstrip('/')), *handler[1:]) for handler in config.get_handlers()
                 ])

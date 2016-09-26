@@ -1,5 +1,5 @@
 class Service:
-    def __new__(cls):
+    def __new__(cls, **kw):
         try:
             return cls._instance
         except AttributeError as e:
