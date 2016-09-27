@@ -6,6 +6,11 @@ from windflow.services import Service
 
 
 class CommandLine(Service):
+    """
+    Command line interface service.
+
+    """
+
     def __init__(self, default_handler=None):
         self.default_handler = default_handler
 
@@ -35,5 +40,6 @@ class CommandLine(Service):
         except AttributeError as e:
             if not callable(self.default_handler):
                 raise
+            handler = None
 
         return (handler or self.default_handler)(logger, options)

@@ -1,4 +1,9 @@
 class Service:
+    """
+    Service singleton implementation.
+
+    """
+
     def __new__(cls, **kw):
         try:
             return cls._instance

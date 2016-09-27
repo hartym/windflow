@@ -3,6 +3,11 @@ import os.path
 
 
 class ApplicationFactory:
+    """
+    TODO change this, the API does not feel good.
+
+    XXX API will change
+    """
     def __init__(self, factory=tornado.web.Application):
         self.factory = factory
         self.mounts = []

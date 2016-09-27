@@ -3,6 +3,13 @@ from windflow.services import Service
 
 
 class WebpackAssets(Service):
+    """
+    Webpack assets service.
+
+    Simply reads the output of the assets plugin (json) so it can be used in a templating context.
+
+    """
+
     filename = 'static/assets.json'
 
     def get(self):

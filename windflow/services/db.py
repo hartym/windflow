@@ -7,6 +7,11 @@ from windflow.services import Service
 
 
 class Database(Service):
+    """
+    SQLAlchemy database service.
+
+    """
+
     name = 'database'
     dsn = None
 

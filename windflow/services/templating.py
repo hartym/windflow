@@ -4,6 +4,11 @@ from windflow.services.base import Service
 
 
 class Templating(Service):
+    """
+    Jinja2 templating service.
+
+    """
+
     name = 'templating'
 
     @property
