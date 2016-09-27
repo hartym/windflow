@@ -25,7 +25,6 @@ install_requires = [
     'psycopg2 ==2.6.2',
     'python-dotenv ==0.6.0',
     'tornado ==4.4.1',
-    'uvloop ==0.5.3',
     'simplejson ==3.8.2',
     'honcho ==0.7.1',
 ]
@@ -41,5 +40,8 @@ extras_require = {
         'pytest-cov >=2.3,<2.4',
         'sphinx',
         'sphinx_rtd_theme',
+    ],
+    'fast': [
+        'uvloop ==0.5.3',
     ],
 }
