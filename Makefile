@@ -1,11 +1,11 @@
 # This file has been auto-generated.
 # All changes will be lost, see Projectfile.
 #
-# Updated at 2016-09-27 10:54:47.016133
+# Updated at 2016-09-27 11:43:20.188480
 
 PYTHON ?= $(shell which python)
 PYTHON_BASENAME ?= $(shell basename $(PYTHON))
-PYTHON_REQUIREMENTS_FILE ?= requirements.txt
+PYTHON_REQUIREMENTS_FILE ?= requirements-optimized.txt
 PYTHON_REQUIREMENTS_DEV_FILE ?= requirements-dev.txt
 QUICK ?= 
 VIRTUAL_ENV ?= .virtualenv-$(PYTHON_BASENAME)

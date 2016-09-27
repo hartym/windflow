@@ -25,7 +25,6 @@ setup(
  'psycopg2 ==2.6.2',
  'python-dotenv ==0.6.0',
  'tornado ==4.4.1',
- 'uvloop ==0.5.3',
  'simplejson ==3.8.2',
  'honcho ==0.7.1'],
     version = version,
@@ -41,7 +40,8 @@ setup(
          'pytest >=3.0,<3.1',
          'pytest-cov >=2.3,<2.4',
          'sphinx',
-         'sphinx_rtd_theme']},
+         'sphinx_rtd_theme'],
+ 'optimized': ['uvloop ==0.5.3']},
     url = 'https://github.com/hartym/windflow',
     download_url = 'https://github.com/hartym/windflow/archive/{version}.tar.gz'.format(version=version),
 )

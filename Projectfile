@@ -41,7 +41,12 @@ extras_require = {
         'sphinx',
         'sphinx_rtd_theme',
     ],
-    'fast': [
+    'optimized': [
         'uvloop ==0.5.3',
     ],
 }
+
+@listen('edgy.project.feature.make.on_generate')
+def on_make_generate(e):
+    e.makefile['PYTHON_REQUIREMENTS_FILE'] = 'requirements-optimized.txt'
+
