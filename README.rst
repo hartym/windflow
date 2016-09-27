@@ -1,7 +1,7 @@
 windflow
 ========
 
-Windflow is a convenience package helping to develop modern and modular applications using async python, tornado and sqlalchemy.
+Windflow is a python 3.5+ toolkit helping to develop modern and modular web applications using asyncio, tornado and sqlalchemy.
 
 .. image:: https://travis-ci.org/hartym/windflow.svg?branch=master
     :target: https://travis-ci.org/hartym/windflow
