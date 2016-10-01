@@ -22,6 +22,7 @@ class ApplicationFactory:
 
     def mount(self, prefix, config):
         self.mounts.append((prefix, config))
+        return self
 
     def __call__(self, *args, **kwargs):
         if not self.configured:
