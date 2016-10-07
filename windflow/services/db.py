@@ -22,12 +22,8 @@ class Database(Service):
     def __init__(self):
         if not self.dsn:
             raise AttributeError('DSN is required.')
-        self.engine = sqlalchemy.create_engine(self.dsn)
+        self.engine = sqlalchemy.create_engine(self.dsn, connect_args={'connect_timeout': 2})
         self.sessionmaker = sqlalchemy.orm.sessionmaker(bind=self.engine)
-
-        import logging
-        logging.getLogger('sqlalchemy.engine').setLevel(logging.WARNING)
-
         self.load()
 
     def __call__(self):
