@@ -1,7 +1,7 @@
 # windflow (see github.com/python-edgy/project)
 
 name = 'windflow'
-description = 'Windflow is a toolkit for creating web applications faster with tornado and asyncio.'
+description = 'Windflow is a rapid web application development toolkit using tornado, asyncio and sqlalchemy.'
 license = 'Apache 2.0'
 
 url = 'https://github.com/hartym/windflow'
@@ -42,12 +42,15 @@ extras_require = {
         'sphinx >=1.4,<1.5',
         'sphinx_rtd_theme',
     ],
-    'optimized': [
+    'uvloop': [
         'uvloop ==0.5.4',
+    ],
+    'alembic': [
+        'alembic ==0.8.8',
     ],
 }
 
+
 @listen('edgy.project.feature.make.on_generate')
 def on_make_generate(e):
-    e.makefile['PYTHON_REQUIREMENTS_FILE'] = 'requirements-optimized.txt'
-
+    e.makefile['PYTHON_REQUIREMENTS_FILE'] = 'requirements-uvloop.txt'
