@@ -17,8 +17,8 @@ except:
 
 setup(
     name = 'windflow',
-    description = ('Windflow is a toolkit for creating web applications faster with tornado and '
- 'asyncio.'),
+    description = ('Windflow is a rapid web application development toolkit using tornado, '
+ 'asyncio and sqlalchemy.'),
     license = 'Apache 2.0',
     install_requires = ['Jinja2 ==2.8',
  'SQLAlchemy ==1.1.1',
@@ -33,7 +33,8 @@ setup(
     classifiers = read('classifiers.txt', tolines),
     packages = find_packages(exclude=['ez_setup', 'example', 'test']),
     include_package_data = True,
-    extras_require = {'dev': ['coverage >=4.2,<4.3',
+    extras_require = {'alembic': ['alembic ==0.8.8'],
+ 'dev': ['coverage >=4.2,<4.3',
          'honcho >=0.7,<0.8',
          'mock >=2.0,<2.1',
          'nose >=1.3,<1.4',
@@ -42,7 +43,7 @@ setup(
          'pytest-cov >=2.3,<2.4',
          'sphinx >=1.4,<1.5',
          'sphinx_rtd_theme'],
- 'optimized': ['uvloop ==0.5.4']},
+ 'uvloop': ['uvloop ==0.5.4']},
     url = 'https://github.com/hartym/windflow',
     download_url = 'https://github.com/hartym/windflow/archive/{version}.tar.gz'.format(version=version),
 )
