@@ -2,7 +2,6 @@ from contextlib import contextmanager
 
 import sqlalchemy
 import sqlalchemy.orm
-from tornado.web import HTTPError
 from windflow.services import Service
 
 
@@ -31,10 +30,7 @@ class Database(Service):
         :return sqlalchemy.orm.session.Session:
         """
         self.load()
-        try:
-            yield self.sessionmaker()
-        except sqlalchemy.orm.exc.NoResultFound as e:
-            raise HTTPError(404)
+        yield self.sessionmaker()
 
     def load(self):
         raise NotImplementedError(
