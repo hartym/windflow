@@ -1,3 +1,4 @@
+import functools
 from contextlib import contextmanager
 
 import sqlalchemy
@@ -30,7 +31,20 @@ class Database(Service):
         :return sqlalchemy.orm.session.Session:
         """
         self.load()
-        yield self.sessionmaker()
+        session = self.sessionmaker()
+        try:
+            yield session
+        finally:
+            session.close()
+
+    def with_session(self, f):
+        """method decorator that injects the session as first argument."""
+        @functools.wraps(f)
+        def wrapped_with_session(*args):
+            with self() as session:
+                return f(args[0], session, *args[1:])
+
+        return wrapped_with_session
 
     def load(self):
         raise NotImplementedError(
