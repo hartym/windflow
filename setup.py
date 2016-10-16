@@ -27,7 +27,7 @@ setup(
  'psycopg2 ==2.6.2',
  'python-dotenv ==0.6.0',
  'simplejson ==3.8.2',
- 'tornado ==4.4.2'],
+ 'tornado >=4,<5'],
     version = version,
     long_description = read('README.rst'),
     classifiers = read('classifiers.txt', tolines),
