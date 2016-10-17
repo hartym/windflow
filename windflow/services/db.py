@@ -19,10 +19,14 @@ class Database(Service):
     def metadata(self):
         return self.load().metadata
 
+    @classmethod
+    def create_engine(cls, dsn, *args, **kwargs):
+        return sqlalchemy.create_engine(dsn, *args, **kwargs)
+
     def __init__(self):
         if not self.dsn:
             raise AttributeError('DSN is required.')
-        self.engine = sqlalchemy.create_engine(self.dsn, connect_args={'connect_timeout': 2})
+        self.engine = type(self).create_engine(self.dsn, connect_args={'connect_timeout': 2})
         self.sessionmaker = sqlalchemy.orm.sessionmaker(bind=self.engine)
         self.load()
 
