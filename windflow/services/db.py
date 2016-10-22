@@ -3,6 +3,7 @@ from contextlib import contextmanager
 
 import sqlalchemy
 import sqlalchemy.orm
+from sqlalchemy.orm import scoped_session
 from windflow.services import Service
 
 
@@ -35,7 +36,7 @@ class Database(Service):
         :return sqlalchemy.orm.session.Session:
         """
         self.load()
-        session = self.sessionmaker()
+        session = scoped_session(self.sessionmaker)
         try:
             yield session
         finally:

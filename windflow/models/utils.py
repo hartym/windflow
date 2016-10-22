@@ -1,10 +1,17 @@
 import functools
 
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, scoped_session
 from sqlalchemy.sql import ClauseElement
 
 
 def get_or_create(session, model, defaults=None, **kwargs):
+    """
+    :param Session session:
+    :param model:
+    :param defaults:
+    :param kwargs:
+    :return:
+    """
     instance = session.query(model).filter_by(**kwargs).first()
     if instance:
         return instance, False
@@ -19,8 +26,8 @@ def get_or_create(session, model, defaults=None, **kwargs):
 def rowmethod(f):
     @functools.wraps(f)
     def method(cls_or_self, session, *args, **kwargs):
-        if not isinstance(session, Session):
-            raise ValueError('Models and model rows methods must take a session as second argument.')
+        if not isinstance(session, (Session, scoped_session)):
+            raise ValueError('Model methods must take a session as second argument, got {}.'.format(repr(session)))
         return f(cls_or_self, session, *args, **kwargs)
 
     return method

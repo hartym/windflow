@@ -1,6 +1,6 @@
 from sqlalchemy import Column, DateTime, Integer, String, func
 from sqlalchemy.ext.declarative import declared_attr
-from windflow.models.utils import get_or_create, modelmethod
+from windflow.models.utils import modelmethod
 
 
 class TimestampableMixin():
@@ -26,18 +26,11 @@ class TextDimensionMixin(TimestampableMixin):
         return 'dim_' + cls.__name__.lower()
 
     @modelmethod
-    def get_or_create(cls, session, value):
-        '''Get or create a row by dimension value.
-
-        :param sqlalchemy.orm.Session session:
-        :param str value:
-        :return:
-        '''
-        return get_or_create(session, cls, value=value)
-
-    @modelmethod
     def get(cls, session, value, mock=False):
-        return ((not mock) and session.query(cls).filter_by(value=value).first()) or cls(value=value)
+        obj = ((not mock) and session.query(cls).filter_by(value=value).first()) or cls(value=value)
+        if session:
+            session.add(obj)
+        return obj
 
     def __str__(self):
         return self.value

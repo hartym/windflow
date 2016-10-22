@@ -1,6 +1,6 @@
 import pytest
 from mock import sentinel
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import scoped_session
 from windflow.services.db import Database
 
 
@@ -44,4 +44,4 @@ def test_session_builder():
     db = MemoryDatabase()
 
     with db() as session:
-        assert isinstance(session, Session)
+        assert isinstance(session, scoped_session)
