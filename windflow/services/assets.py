@@ -25,6 +25,10 @@ class UnavailableAssets(Assets):
                 'bundling process is still running, or that the webpack AssetsPlugin did not run. Look for the '
                 'assets.json file in your static directory (and look at webpack output).")</script>')
 
+    #def __getattr__(self, item):
+    #    return self
+
+
 
 class WebpackAssets(Service):
     """

@@ -15,7 +15,8 @@ class CommandLine(Service):
         self.default_handler = default_handler
 
         self.parser = argparse.ArgumentParser()
-        self.parser.add_argument('-v', '--verbose', action='count', help='increase output verbosity')
+        self.parser.add_argument('--debug', '-d', action='store_true', help='enable debugging features')
+        self.parser.add_argument('--verbose', '-v', action='count', help='increase output verbosity')
 
         self.subparsers = self.parser.add_subparsers(dest='handler')
         self.subparsers.required = not callable(default_handler)
@@ -32,8 +33,13 @@ class CommandLine(Service):
         logger = logging.getLogger(__name__)
 
         # todo configure_logger() method ?
+        if options.debug:
+            logging.getLogger('root').setLevel(logging.INFO)
         if options.verbose:
-            logging.getLogger('sqlalchemy.engine').setLevel(logging.INFO if options.verbose < 2 else logging.DEBUG)
+            if options.verbose >= 1:
+                logging.getLogger('root').setLevel(logging.DEBUG)
+            if options.verbose >= 2:
+                logging.getLogger('sqlalchemy.engine').setLevel(logging.INFO if options.verbose < 2 else logging.DEBUG)
 
         try:
             handler = options.handler

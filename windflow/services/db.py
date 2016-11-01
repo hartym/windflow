@@ -1,9 +1,11 @@
 import functools
 from contextlib import contextmanager
+from functools import partial
 
 import sqlalchemy
 import sqlalchemy.orm
 from sqlalchemy.orm import scoped_session
+from werkzeug.utils import cached_property
 from windflow.services import Service
 
 
@@ -28,7 +30,7 @@ class Database(Service):
         if not self.dsn:
             raise AttributeError('DSN is required.')
         self.engine = type(self).create_engine(self.dsn, connect_args={'connect_timeout': 2})
-        self.sessionmaker = sqlalchemy.orm.sessionmaker(bind=self.engine)
+        self.sessionmaker = partial(scoped_session, sqlalchemy.orm.sessionmaker(bind=self.engine))
         self.load()
 
     def __call__(self):
@@ -36,7 +38,7 @@ class Database(Service):
         :return sqlalchemy.orm.session.Session:
         """
         self.load()
-        session = scoped_session(self.sessionmaker)
+        session = self.sessionmaker()
         try:
             yield session
         finally:
@@ -44,6 +46,7 @@ class Database(Service):
 
     def with_session(self, f):
         """method decorator that injects the session as first argument."""
+
         @functools.wraps(f)
         def wrapped_with_session(*args):
             with self() as session:
@@ -79,9 +82,13 @@ class DatabaseMigrationsMixin:
     load = Database.load
     metadata = Database.metadata
 
-    @property
+    dsn = Database.dsn
+
+    @cached_property
     def alembic_cfg(self):
-        return AlembicCfg(self.alembic_cfg_path)
+        cfg = AlembicCfg(self.alembic_cfg_path)
+        cfg.set_main_option('sqlalchemy.url', self.dsn)
+        return cfg
 
     def execute_up(self, logger, options):
         self.load()

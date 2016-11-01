@@ -12,7 +12,7 @@ def generate_repr_method(*columns):
 def generate_str_method(*columns):
     def __str__(self):
         return (
-            ' '.join(('{{self.{c}}}'.format(c=c) for c in columns))
+            ' '.join(('{{self.{c}}}'.format(c=str(c)) for c in columns))
         ).format(self=self)
 
     return __str__
