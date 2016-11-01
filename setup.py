@@ -22,6 +22,7 @@ setup(
     license = 'Apache 2.0',
     install_requires = ['Jinja2 ==2.8',
  'SQLAlchemy ==1.1.1',
+ 'Werkzeug >=0.11,<0.12',
  'alembic ==0.8.8',
  'honcho ==0.7.1',
  'psycopg2 ==2.6.2',
