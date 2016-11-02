@@ -4,16 +4,26 @@ from windflow.services import Service
 
 class Assets(dict):
     def get_style(self, name):
-        bundle = self[name]
-        if 'css' in bundle:
+        try:
+            bundle = self[name]
+        except KeyError as e:
+            return ''
+
+        try:
             return '<link href="' + bundle['css'] + '" rel="stylesheet">'
-        return ''
+        except KeyError as e:
+            return ''
 
     def get_script(self, name):
-        bundle = self[name]
-        if 'js' in bundle:
+        try:
+            bundle = self[name]
+        except KeyError as e:
+            return ''
+
+        try:
             return '<script src="' + bundle['js'] + '" type="text/javascript"></script>'
-        return ''
+        except KeyError as e:
+            return ''
 
 
 class UnavailableAssets(Assets):
@@ -25,9 +35,8 @@ class UnavailableAssets(Assets):
                 'bundling process is still running, or that the webpack AssetsPlugin did not run. Look for the '
                 'assets.json file in your static directory (and look at webpack output).")</script>')
 
-    #def __getattr__(self, item):
-    #    return self
-
+        # def __getattr__(self, item):
+        #    return self
 
 
 class WebpackAssets(Service):
