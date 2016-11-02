@@ -1,7 +1,9 @@
 windflow
 ========
 
-Windflow is a python 3.5+ toolkit helping to develop modern and modular web applications using asyncio, tornado and sqlalchemy.
+Windflow is a python 3.5+ toolkit helping to develop modern and modular web applications using asyncio and sqlalchemy.
+
+This is an experimental project, things will change, probably in huge ways. Use it at your own risks.
 
 .. image:: https://travis-ci.org/hartym/windflow.svg?branch=master
     :target: https://travis-ci.org/hartym/windflow
@@ -15,3 +17,6 @@ Windflow is a python 3.5+ toolkit helping to develop modern and modular web appl
     :target: http://windflow.readthedocs.org/en/latest/?badge=latest
     :alt: Documentation Status
 
+----
+
+Made with ♥ by `Romain Dorgueil <https://twitter.com/rdorgueil>`_ and `contributors <https://github.com/hartym/windflow/graphs/contributors>`_.
