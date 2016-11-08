@@ -57,10 +57,11 @@ def model_getter_method_with_memory_cache(*filters):
 
 
 class Filter:
-    def __init__(self, name, instanceof, factory=None):
+    def __init__(self, name, instanceof, factory=None, required=True):
         self.name = name
         self.instanceof = instanceof
         self.factory = factory or instanceof
+        self.required = required
 
     def __call__(self, session, value, **kwargs):
         try:
@@ -76,15 +77,6 @@ def _get_cache_dict(cls, session):
     if not hasattr(cache_holder, '_unique_cache'):
         cache_holder._unique_cache = {}
     return cache_holder._unique_cache
-
-
-def _apply_filters(filters, values, create=True, session=None):
-    return {
-        filter.name: (
-            values[i] if isinstance(values[i], filter.instanceof)
-            else filter(session, values[i], create=create)
-        ) for i, filter in enumerate(filters)
-        }
 
 
 class Getter:
@@ -104,16 +96,40 @@ class Getter:
         f.apply = lambda *args, **kwargs: functools.partial(f, *args, **kwargs)
         return f
 
-    def __wrapped_call__(self, model, session, *values, create=True, **defaults):
+    def apply_filters(self, filters, values, create=True, session=None, **defaults):
+        filtered = {}
+        i = 0
+
+        for filter in filters:
+            if filter.required:
+                try:
+                    value = values[i]
+                except IndexError as e:
+                    raise TypeError('Value for required filter "{}" is missing.'.format(filter.name))
+                i += 1
+            elif filter.name in defaults:
+                value = defaults.pop(filter.name)
+            else:
+                continue
+
+            if filter.instanceof and isinstance(value, filter.instanceof):
+                filtered[filter.name] = value
+            else:
+                filtered[filter.name] = filter(session, value, create=create)
+
+        return filtered, defaults
+
+    def __wrapped_call__(self, model, session, *values, create=True, **named_values_and_defaults):
         assert session is None or isinstance(session, (
             Session, scoped_session)), 'If provided, session should be an sqlalchemy session object.'
 
-        # cache ?
-        cache = _get_cache_dict(model, session)
-        cache_key = (model,) + values
-
         # compute filter values (includes call to related models)
-        values = _apply_filters(self.filters, values, create=create, session=session)
+        values, defaults = self.apply_filters(self.filters, values, create=create, session=session,
+                                              **named_values_and_defaults)
+
+        # get cache dictionary and key
+        cache = _get_cache_dict(model, session)
+        cache_key = (model,) + tuple(values.items())
 
         # if no cache, delegate to real (decorated) Getter method
         if not cache_key in cache:

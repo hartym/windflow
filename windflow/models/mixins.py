@@ -1,6 +1,7 @@
 from sqlalchemy import Column, DateTime, Integer, String, func
 from sqlalchemy.ext.declarative import declared_attr
-from windflow.models.utils import modelmethod
+from windflow.models.utils import Filter, Getter
+from windflow.utils import generate_repr_method, generate_str_method
 
 
 class TimestampableMixin():
@@ -25,12 +26,9 @@ class TextDimensionMixin(TimestampableMixin):
     def __tablename__(cls):
         return 'dim_' + cls.__name__.lower()
 
-    @modelmethod
-    def get(cls, session, value, mock=False):
-        obj = ((not mock) and session.query(cls).filter_by(value=value).first()) or cls(value=value)
-        if session:
-            session.add(obj)
-        return obj
+    @Getter(Filter('value', str))
+    def get(cls, session, filters):
+        return session.query(cls).filter_by(**filters).first()
 
-    def __str__(self):
-        return self.value
+    __str__ = generate_str_method('value')
+    __repr__ = generate_repr_method('value')
