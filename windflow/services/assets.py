@@ -1,8 +1,14 @@
-import simplejson
+import json
+import os
+
 from windflow.services import Service
 
 
 class Assets(dict):
+    def __init__(self, path, iterable=None, **kwargs):
+        super().__init__(iterable or (), **kwargs)
+        self._path = path
+
     def get_style(self, name):
         try:
             bundle = self[name]
@@ -10,7 +16,7 @@ class Assets(dict):
             return ''
 
         try:
-            return '<link href="' + bundle['css'] + '" rel="stylesheet">'
+            return '<link href="' + os.path.join(self._path, bundle['css']) + '" rel="stylesheet">'
         except KeyError as e:
             return ''
 
@@ -21,7 +27,7 @@ class Assets(dict):
             return ''
 
         try:
-            return '<script src="' + bundle['js'] + '" type="text/javascript"></script>'
+            return '<script src="' + os.path.join(self._path, bundle['js']) + '" type="text/javascript"></script>'
         except KeyError as e:
             return ''
 
@@ -35,9 +41,6 @@ class UnavailableAssets(Assets):
                 'bundling process is still running, or that the webpack AssetsPlugin did not run. Look for the '
                 'assets.json file in your static directory (and look at webpack output).")</script>')
 
-        # def __getattr__(self, item):
-        #    return self
-
 
 class WebpackAssets(Service):
     """
@@ -48,12 +51,16 @@ class WebpackAssets(Service):
     """
 
     filename = 'static/assets.json'
+    path = '/'
+
+    assets_type = Assets
+    unavailable_assets_type = UnavailableAssets
 
     def get(self):
         try:
             with open(self.filename) as f:
-                return Assets(simplejson.load(f))
+                return self.assets_type(self.path, json.load(f))
         except:
             # todo this is evil, but we'd need to find out errors e do want to "ignore" or how to tell user about it.
             # at the very minimum: simplejson.scanner.JSONDecodeError and probably missing file
-            return UnavailableAssets()
+            return self.unavailable_assets_type(self.path)
