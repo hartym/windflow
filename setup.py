@@ -43,7 +43,7 @@ setup(
          'pytest-cov >=2.4,<2.5',
          'sphinx >=1.4,<1.5',
          'sphinx_rtd_theme'],
- 'uvloop': ['uvloop >=0.5,<0.6']},
+ 'uvloop': ['uvloop >=0.6,<0.7']},
     url = 'https://github.com/hartym/windflow',
     download_url = 'https://github.com/hartym/windflow/archive/{version}.tar.gz'.format(version=version),
 )
