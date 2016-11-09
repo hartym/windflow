@@ -29,8 +29,8 @@ class Database(Service):
     def __init__(self):
         if not self.dsn:
             raise AttributeError('DSN is required.')
-        self.engine = type(self).create_engine(self.dsn, connect_args={'connect_timeout': 2})
-        self.sessionmaker = partial(scoped_session, sqlalchemy.orm.sessionmaker(bind=self.engine))
+        self.engine = type(self).create_engine(self.dsn, connect_args={'connect_timeout': 2}, pool_recycle=1, pool_timeout=1, pool_size=8)
+        self.sessionmaker = partial(scoped_session, sqlalchemy.orm.sessionmaker(autocommit=False, autoflush=True, bind=self.engine))
         self.load()
 
     def __call__(self):
@@ -42,7 +42,7 @@ class Database(Service):
         try:
             yield session
         finally:
-            session.close()
+            session.remove()
 
     def with_session(self, f):
         """method decorator that injects the session as first argument."""
