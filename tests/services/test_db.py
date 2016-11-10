@@ -10,7 +10,12 @@ class BaseModelStub():
         return sentinel.metadata
 
 
-class MemoryDatabase(Database):
+class DatabaseMock(Database):
+    engine_factory_options = {}
+    sessionmaker_options = {}
+
+
+class MemoryDatabase(DatabaseMock):
     dsn = 'sqlite://'
 
     def load(self):
@@ -18,7 +23,7 @@ class MemoryDatabase(Database):
 
 
 def test_missing_dsn():
-    class MissingDsnDatabase(Database):
+    class MissingDsnDatabase(DatabaseMock):
         pass
 
     with pytest.raises(AttributeError):
@@ -26,7 +31,7 @@ def test_missing_dsn():
 
 
 def test_missing_load_impl():
-    class MissingLoadImplDatabase(Database):
+    class MissingLoadImplDatabase(DatabaseMock):
         dsn = 'sqlite://'
 
     with pytest.raises(NotImplementedError):

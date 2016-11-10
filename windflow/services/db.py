@@ -19,30 +19,56 @@ class Database(Service):
     dsn = None
 
     @property
+    def engine_factory(self):
+        return sqlalchemy.create_engine
+
+    engine_factory_options = {
+        'connect_args': {'connect_timeout': 2},
+        'pool_recycle': 1,
+        'pool_timeout': 1,
+        'pool_size': 8,
+    }
+
+    @property
+    def sessionmaker_factory(self):
+        return sqlalchemy.orm.sessionmaker
+
+    sessionmaker_options = {
+        'autocommit': False,
+        'autoflush': True,
+    }
+
+    @property
     def metadata(self):
         return self.load().metadata
-
-    @classmethod
-    def create_engine(cls, dsn, *args, **kwargs):
-        return sqlalchemy.create_engine(dsn, *args, **kwargs)
 
     def __init__(self):
         if not self.dsn:
             raise AttributeError('DSN is required.')
-        self.engine = type(self).create_engine(self.dsn, connect_args={'connect_timeout': 2}, pool_recycle=1, pool_timeout=1, pool_size=8)
-        self.sessionmaker = partial(scoped_session, sqlalchemy.orm.sessionmaker(autocommit=False, autoflush=True, bind=self.engine))
+        self.engine = self.create_engine()
+        self.sessionmaker = self.create_sessionmaker(self.engine)
         self.load()
 
     def __call__(self):
         """
         :return sqlalchemy.orm.session.Session:
         """
-        self.load()
         session = self.sessionmaker()
         try:
             yield session
         finally:
             session.remove()
+
+    def create_engine(self):
+        return self.engine_factory(self.dsn, **self.engine_factory_options)
+
+    def create_sessionmaker(self, engine):
+        def sessionmaker():
+            return scoped_session(
+                sqlalchemy.orm.sessionmaker(bind=engine, **self.sessionmaker_options)
+            )
+
+        return sessionmaker
 
     def with_session(self, f):
         """method decorator that injects the session as first argument."""
