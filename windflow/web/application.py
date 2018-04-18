@@ -8,6 +8,7 @@ class ApplicationFactory:
 
     XXX API will change
     """
+
     def __init__(self, factory=tornado.web.Application):
         self.factory = factory
         self.mounts = []
@@ -31,8 +32,9 @@ class ApplicationFactory:
         app = self.factory(*args, **kwargs)
 
         for prefix, config in reversed(self.mounts):
-            app.add_handlers('.*$', [
-                (os.path.join(prefix, handler[0].lstrip('/')), *handler[1:]) for handler in config.get_handlers()
-                ])
+            app.add_handlers(
+                '.*$',
+                [(os.path.join(prefix, handler[0].lstrip('/')), *handler[1:]) for handler in config.get_handlers()]
+            )
 
         return app

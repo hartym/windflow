@@ -1,5 +1,6 @@
 from sqlalchemy import Column, DateTime, Integer, String, func
 from sqlalchemy.ext.declarative import declared_attr
+
 from windflow.models.utils import Filter, Getter
 from windflow.utils import generate_repr_method, generate_str_method
 
@@ -12,7 +13,7 @@ class TimestampableMixin():
     '''Row update timestamp.'''
 
 
-class TextDimensionMixin(TimestampableMixin):
+class TextDimensionMixin():
     '''
     Generic model mixin used to build text dimension models.
     '''

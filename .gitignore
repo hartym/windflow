@@ -19,9 +19,11 @@
 .env
 .tox/
 .webassets-cache
+/*.iml
 /.cache
 /.coverage
 /.idea
+/.medikit
 /.python*-*
 /build
 /coverage.xml

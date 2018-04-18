@@ -37,9 +37,11 @@ class UnavailableAssets(Assets):
         return ''
 
     def get_script(self, name):
-        return ('<script type="text/javascript">document.write("Assets are not available. It may means that the '
-                'bundling process is still running, or that the webpack AssetsPlugin did not run. Look for the '
-                'assets.json file in your static directory (and look at webpack output).")</script>')
+        return (
+            '<script type="text/javascript">document.write("Assets are not available. It may means that the '
+            'bundling process is still running, or that the webpack AssetsPlugin did not run. Look for the '
+            'assets.json file in your static directory (and look at webpack output).")</script>'
+        )
 
 
 class WebpackAssets(Service):

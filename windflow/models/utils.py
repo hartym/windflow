@@ -42,7 +42,7 @@ def model_getter_method_with_memory_cache(*filters):
                 else:
                     filter_values[filter] = values[i]
 
-            key = (cls,) + values
+            key = (cls, ) + values
             if not key in cache:
                 cache[key] = f(cls, session, filter_values) if session else None
                 if cache[key] is None:
@@ -120,16 +120,17 @@ class Getter:
         return filtered, defaults
 
     def __wrapped_call__(self, model, session, *values, create=True, **named_values_and_defaults):
-        assert session is None or isinstance(session, (
-            Session, scoped_session)), 'If provided, session should be an sqlalchemy session object.'
+        assert session is None or isinstance(session, (Session, scoped_session)
+                                             ), 'If provided, session should be an sqlalchemy session object.'
 
         # compute filter values (includes call to related models)
-        values, defaults = self.apply_filters(self.filters, values, create=create, session=session,
-                                              **named_values_and_defaults)
+        values, defaults = self.apply_filters(
+            self.filters, values, create=create, session=session, **named_values_and_defaults
+        )
 
         # get cache dictionary and key
         cache = _get_cache_dict(model, session)
-        cache_key = (model,) + tuple(values.items())
+        cache_key = (model, ) + tuple(values.items())
 
         # if no cache, delegate to real (decorated) Getter method
         if not cache_key in cache:
@@ -158,8 +159,7 @@ class Getter:
 
     apply = lambda self, *args, **kwargs: functools.partial(self, *args, **kwargs)
 
-    __repr__ = lambda self: repr(self.getter).replace('<function ', '<{} '.format(
-        type(self).__name__)) if self.getter else super().__repr__()
+    __repr__ = lambda self: repr(self.getter).replace('<function ', '<{} '.format(type(self).__name__)) if self.getter else super().__repr__()
 
 
 def rowmethod(f):

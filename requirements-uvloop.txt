@@ -1,1 +1,3 @@
 -e .[uvloop]
+-r requirements.txt
+uvloop==0.9.1

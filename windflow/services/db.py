@@ -1,11 +1,11 @@
 import functools
 from contextlib import contextmanager
-from functools import partial
 
 import sqlalchemy
 import sqlalchemy.orm
 from sqlalchemy.orm import scoped_session
 from werkzeug.utils import cached_property
+
 from windflow.services import Service
 
 
@@ -23,7 +23,9 @@ class Database(Service):
         return sqlalchemy.create_engine
 
     engine_factory_options = {
-        'connect_args': {'connect_timeout': 2},
+        'connect_args': {
+            'connect_timeout': 2
+        },
         'pool_recycle': 1,
         'pool_timeout': 1,
         'pool_size': 8,
@@ -49,7 +51,7 @@ class Database(Service):
         self.sessionmaker = self.create_sessionmaker(self.engine)
         self.load()
 
-    def __call__(self):
+    def session(self):
         """
         :return sqlalchemy.orm.session.Session:
         """
@@ -59,14 +61,14 @@ class Database(Service):
         finally:
             session.remove()
 
+    __call__ = session
+
     def create_engine(self):
         return self.engine_factory(self.dsn, **self.engine_factory_options)
 
     def create_sessionmaker(self, engine):
         def sessionmaker():
-            return scoped_session(
-                sqlalchemy.orm.sessionmaker(bind=engine, **self.sessionmaker_options)
-            )
+            return scoped_session(sqlalchemy.orm.sessionmaker(bind=engine, **self.sessionmaker_options))
 
         return sessionmaker
 
@@ -82,7 +84,8 @@ class Database(Service):
 
     def load(self):
         raise NotImplementedError(
-            'You must implement `load()` method on Database service, and return your SQLAlchemy base model.')
+            'You must implement `load()` method on Database service, and return your SQLAlchemy base model.'
+        )
 
 
 Database.__call__ = contextmanager(Database.__call__)
