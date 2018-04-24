@@ -25,6 +25,7 @@
 /.idea
 /.medikit
 /.python*-*
+/.release
 /build
 /coverage.xml
 /dist

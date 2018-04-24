@@ -96,10 +96,8 @@ try:
 except ImportError as e:
     ALEMBIC_NOT_INSTALLED_ERROR = 'AlembicMigrationsMixin requires the optional "alembic" dependency. Install it with `pip install alembic`.'
 
-
     def alembic_cmd(*a, **kw):
         raise NotImplementedError(ALEMBIC_NOT_INSTALLED_ERROR)
-
 
     def AlembicCfg(*a, **kw):
         raise NotImplementedError(ALEMBIC_NOT_INSTALLED_ERROR)
