@@ -54,7 +54,7 @@ setup(
     packages=find_packages(exclude=['ez_setup', 'example', 'test']),
     include_package_data=True,
     install_requires=[
-        'Jinja2 (~= 2.9)', 'SQLAlchemy (>= 1.2, < 1.3)', 'Werkzeug (~= 0.14.1)', 'honcho (~= 1.0.1)',
+        'Jinja2 (~= 2.9)', 'SQLAlchemy (>= 1.2, < 1.3)', 'Werkzeug (>= 0.14.1,< 0.16.0)', 'honcho (~= 1.0.1)',
         'python-dotenv (~= 0.8.2)', 'simplejson (~= 3.13.2)', 'tornado (~= 5.0)'
     ],
     extras_require={
