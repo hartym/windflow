@@ -1,6 +1,6 @@
 -e .
 honcho==1.0.1
-jinja2==2.10
+jinja2==2.11.3
 markupsafe==1.0
 python-dotenv==0.8.2
 simplejson==3.13.2

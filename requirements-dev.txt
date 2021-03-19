@@ -9,7 +9,7 @@ coverage==4.5.1
 docutils==0.14
 idna==2.6
 imagesize==1.0.0
-jinja2==2.10
+jinja2==2.11.3
 markupsafe==1.0
 more-itertools==4.1.0
 packaging==17.1
