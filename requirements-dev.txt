@@ -25,5 +25,5 @@ six==1.11.0
 snowballstemmer==1.2.1
 sphinx==1.7.2
 sphinxcontrib-websupport==1.0.1
-urllib3==1.22
+urllib3==1.26.5
 yapf==0.21.0
