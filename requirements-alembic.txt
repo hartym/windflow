@@ -1,7 +1,7 @@
 -e .[alembic]
 -r requirements.txt
 alembic==0.9.9
-mako==1.0.7
+mako==1.2.2
 markupsafe==1.0
 python-dateutil==2.7.2
 python-editor==1.0.3
